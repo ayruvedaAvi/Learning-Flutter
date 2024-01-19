@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-class StyleText extends StatelessWidget{
-  const StyleText({super.key});
+
+class StyleText extends StatelessWidget {
+  const StyleText(this.text, {super.key});
+  final String text;
+
   @override
-  Widget build(context){
-    return
-      const Text(
-          'This text is inside a custom widget on another file.',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-          ),
-      );
+  Widget build(context) {
+    return Text(
+      text,
+      style: const TextStyle(
+        color: Colors.black,
+        fontSize: 20,
+      ),
+    );
   }
 }

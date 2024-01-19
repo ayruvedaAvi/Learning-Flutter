@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:first_app/style_text.dart';
 
+const startAlignment = Alignment.topLeft;
+const endAlignment = Alignment.bottomRight;
+
 class GradientContainer extends StatelessWidget {
-  const GradientContainer({super.key});
+  const GradientContainer(this.color, {super.key});
+  final List<Color> color;
   @override
   Widget build(context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            Color.fromARGB(255, 77, 64, 255),
-            Color.fromARGB(255, 196, 15, 190)
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+          colors: color,
+          begin: startAlignment,
+          end: endAlignment,
         ),
       ),
       child: const Center(
-        child: StyleText(),
+        child: StyleText("This text is inside a custom widget on another file."),
       ),
     );
   }
