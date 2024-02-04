@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:basic_quiz/body_container.dart';
+import 'package:basic_quiz/start_screen.dart';
 
-void main (){
+const start = Alignment.topLeft;
+const end = Alignment.bottomRight;
+
+void main() {
   runApp(
-    const MaterialApp(
+    MaterialApp(
       home: Scaffold(
-        body: BodyContainer(),
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(248, 255, 234, 0),
+                Color.fromARGB(233, 170, 0, 142)
+              ],
+              begin: start,
+              end: end,
+            ),
+          ),
+          child: StartScreen(),
+        ),
       ),
     ),
   );
