@@ -17,7 +17,7 @@ class _QuizState extends State<Quiz>{
   Widget? activeScreen;
 
   //Adding initilization tasks. kinaki switchScreen is refrenced at the same time as the object is being created.
-  //Anything inside the initState method will be initialized after the object is made. ONCE.
+  //Anything inside the initState method will be initialized after the object is made. ONCE. ??test
   @override
   void initState() { 
     activeScreen = StartScreen(switchScreen);
