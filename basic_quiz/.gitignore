@@ -42,3 +42,11 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# The things I don't want to commit
+./android
+./ios
+./build
+./linux
+./web
+./windows
