@@ -44,9 +44,9 @@ app.*.map.json
 /android/app/release
 
 # The things I don't want to commit
-./android
-./ios
-./build
-./linux
-./web
-./windows
+/android
+/ios
+/build
+/linux
+/web
+/windows
