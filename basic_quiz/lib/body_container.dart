@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:basic_quiz/image_container.dart';
 
 const color = [
-  Color.fromARGB(248, 0, 151, 45),
+  Color.fromARGB(248, 255, 234, 0),
   Color.fromARGB(233, 170, 0, 142)
 ];
 const start = Alignment.topLeft;
