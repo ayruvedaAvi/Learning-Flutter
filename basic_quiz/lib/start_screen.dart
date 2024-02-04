@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 const textColor = Color.fromARGB(255, 255, 198, 198);
 
 class StartScreen extends StatelessWidget {
-  const StartScreen({super.key});
+  const StartScreen(this.startQuiz, {super.key});
+
+  final void Function() startQuiz;
 
   @override
   Widget build(context) {
@@ -32,7 +34,7 @@ class StartScreen extends StatelessWidget {
         ),
         const SizedBox(height: 30),
         OutlinedButton.icon(
-          onPressed: () {},
+          onPressed: startQuiz,
           style: OutlinedButton.styleFrom(
             foregroundColor: textColor,
           ),
