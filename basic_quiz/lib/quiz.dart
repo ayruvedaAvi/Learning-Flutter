@@ -1,6 +1,8 @@
+import 'package:basic_quiz/result_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:basic_quiz/start_screen.dart';
 import 'package:basic_quiz/questions_screen.dart';
+import 'package:basic_quiz/data/questions.dart';
 
 const start = Alignment.topLeft;
 const end = Alignment.bottomRight;
@@ -16,7 +18,7 @@ class Quiz extends StatefulWidget{
 class _QuizState extends State<Quiz>{
   Widget? activeScreen;
 
-  final List<String> selectedAnswers = [];
+  List<String> selectedAnswers = [];
 
   //Adding initilization tasks. kinaki switchScreen is refrenced at the same time as the object is being created.
   //Anything inside the initState method will be initialized after the object is made. ONCE. ??test
@@ -28,6 +30,13 @@ class _QuizState extends State<Quiz>{
 
   void chooseAnswer(String answer){
     selectedAnswers.add(answer);
+    if (selectedAnswers.length== questions.length){
+      setState(() {
+        // print(selectedAnswers);
+        activeScreen = ResultsScreen(chosenAnswer: selectedAnswers);
+        // selectedAnswers = [];
+      });
+    }
   }
 
   void switchScreen(){

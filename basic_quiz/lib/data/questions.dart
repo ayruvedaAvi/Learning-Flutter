@@ -16,7 +16,7 @@ const questions = [
       'Room temp in F = 72',
       'Room temp in ^C = 20', 
       'Albert Einstein ko bhanda ali kam = dherai', 
-      'Total no of districts in Nepal = 77',
+      'Total no of districts in Nepal +1 = 78',
     ],
   ),
   QuizQuestion(
@@ -45,5 +45,14 @@ const questions = [
       'Melamchi aayo ktm ma. 5.78%', 
       'Saptakoshi dekhya chha katro chha? 2.8%',
     ],
-  )
+  ),
+  QuizQuestion(
+    'What is the most said phrase/word in Nepal?', 
+    [
+      'Gautam Buddha was born in Nepal',
+      'Mt. Everest is in Nepal', 
+      'Sita was born in Nepal', 
+      'Muj*',
+    ],
+  ),
 ];
