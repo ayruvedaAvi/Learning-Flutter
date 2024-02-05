@@ -16,6 +16,8 @@ class Quiz extends StatefulWidget{
 class _QuizState extends State<Quiz>{
   Widget? activeScreen;
 
+  final List<String> selectedAnswers = [];
+
   //Adding initilization tasks. kinaki switchScreen is refrenced at the same time as the object is being created.
   //Anything inside the initState method will be initialized after the object is made. ONCE. ??test
   @override
@@ -24,9 +26,13 @@ class _QuizState extends State<Quiz>{
     super.initState(); 
   }
 
+  void chooseAnswer(String answer){
+    selectedAnswers.add(answer);
+  }
+
   void switchScreen(){
     setState(() {
-      activeScreen = const QuestionsScreen();
+      activeScreen = QuestionsScreen(onSelectAnswer: chooseAnswer);
     });
   }
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 const textColor = Color.fromARGB(255, 255, 198, 198);
 
@@ -25,10 +26,10 @@ class StartScreen extends StatelessWidget {
           color: const Color.fromARGB(95, 248, 247, 250),   //making the image transparent, the A in the ARGB is for opacity
         ),
         const SizedBox(height: 80),
-        const Text(
-          'Some flutter quiz question.',
-          style: TextStyle(
-            color: textColor,
+        Text(
+          'Some Nepali General Knowledge Questions.',
+          style: GoogleFonts.poorStory(
+            color: const Color.fromARGB(255, 239, 228, 196),
             fontSize: 20,
           ),
         ),
