@@ -1,12 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:expense_tracker/widgets/expenses.dart';
 
-var kColorScheme =ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 108, 0, 85));
+var kColorScheme = ColorScheme.fromSeed(
+  seedColor: const Color.fromARGB(255, 108, 0, 85),
+);
+var kDarkColorScheme = ColorScheme.fromSeed(
+  seedColor: const Color.fromARGB(255, 26, 47, 48),
+  brightness: Brightness.dark,
+);
 
-void main(){
+void main() {
   runApp(
     MaterialApp(
       home: const Expenses(),
+      darkTheme: ThemeData.dark().copyWith(
+        colorScheme: kDarkColorScheme,
+        cardTheme: CardTheme().copyWith(
+          color: kDarkColorScheme.primaryContainer,
+          margin: const EdgeInsets.all(10),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: kDarkColorScheme.primaryContainer,
+            foregroundColor: kDarkColorScheme.onPrimaryContainer,
+          ),
+        ),
+      ),
       theme: ThemeData().copyWith(
         colorScheme: kColorScheme,
         appBarTheme: AppBarTheme().copyWith(
@@ -23,13 +42,14 @@ void main(){
           ),
         ),
         textTheme: ThemeData().textTheme.copyWith(
-          titleLarge: TextStyle(
-            fontWeight: FontWeight.normal,
-            color: kColorScheme.onPrimaryContainer,
-            fontSize: 25,
-          ),
-        ),
+              titleLarge: TextStyle(
+                fontWeight: FontWeight.normal,
+                color: kColorScheme.onPrimaryContainer,
+                fontSize: 25,
+              ),
+            ),
       ),
+      themeMode: ThemeMode.system, //Default
     ),
   );
 }
