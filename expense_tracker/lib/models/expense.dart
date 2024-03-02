@@ -5,13 +5,13 @@ import 'package:intl/intl.dart';
 final formatter = DateFormat.yMd();
 const uuid = Uuid();
 
-enum Category { food, travel, leisure, work }
+enum Category { food, groceries, fuel, others }
 
 const categoryIcons = {
-  Category.food: Icons.lunch_dining,
-  Category.leisure: Icons.movie,
-  Category.travel: Icons.flight_takeoff,
-  Category.work: Icons.work,
+  Category.food: Icons.brunch_dining,
+  Category.fuel: Icons.motorcycle,
+  Category.groceries: Icons.local_grocery_store_outlined,
+  Category.others: Icons.other_houses,
 };
 
 class Expense {
