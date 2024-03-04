@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:expense_tracker/widgets/expenses.dart';
+// import 'package:flutter/services.dart';
 
 var kColorScheme = ColorScheme.fromSeed(
   seedColor: const Color.fromARGB(255, 108, 0, 85),
@@ -10,6 +11,13 @@ var kDarkColorScheme = ColorScheme.fromSeed(
 );
 
 void main() {
+  //The following commented code is to lock the app's orientation.
+
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp,
+  // ]).then(
+  //   (fn) {
   runApp(
     MaterialApp(
       home: const Expenses(),
@@ -52,4 +60,6 @@ void main() {
       themeMode: ThemeMode.system, //Default
     ),
   );
+  //   },
+  // );
 }
