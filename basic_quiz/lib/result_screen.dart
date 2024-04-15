@@ -41,7 +41,7 @@ class ResultsScreen extends StatelessWidget{
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Text("Out of $totalQn questions, you correctly answered $correctQn questions."),
+            Text("Out of $totalQn questions, you correctly answered $correctQn questions."),
             const Text("The result are as follows: "),
             const SizedBox(height: 30,),
             // Scrollable list of questions and answers
