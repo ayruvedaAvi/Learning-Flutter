@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shopping_list/data/categories.dart';
 
 class NewItem extends StatefulWidget {
@@ -13,6 +11,14 @@ class NewItem extends StatefulWidget {
 }
 
 class _NewItemState extends State<NewItem> {
+  final _formKey = GlobalKey<FormState>();
+  var _enteredName = '';
+
+  void _saveItem(){
+    _formKey.currentState!.validate();
+    _formKey.currentState!.save();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,6 +28,7 @@ class _NewItemState extends State<NewItem> {
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: Form(
+          key: _formKey,
           child: Column(
             children: [
               TextFormField(
@@ -38,6 +45,9 @@ class _NewItemState extends State<NewItem> {
                   }
                   return null;
                 },
+                onSaved: (value){
+                  _enteredName = value!;
+                }
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -47,7 +57,8 @@ class _NewItemState extends State<NewItem> {
                       decoration: const InputDecoration(
                         label: Text('Quantity'),
                       ),
-                      initialValue: '1',
+                      // initialValue: '0',
+                      keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null ||
                             value.isEmpty ||
@@ -90,11 +101,13 @@ class _NewItemState extends State<NewItem> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _formKey.currentState!.reset();
+                    },
                     child: const Text('Reset'),
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: _saveItem,
                     child: const Text('Add Item'),
                   ),
                 ],
