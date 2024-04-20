@@ -28,19 +28,18 @@ class _GroceryListState extends State<GroceryList> {
 
   void _loadItems() async {
     final url = Uri.https(
-        'abc-flutter-bcd61-default-rtdb.asia-southeast1.firebasedatabase.app',
+        'learning-flutter-bcd61-default-rtdb.asia-southeast1.firebasedatabase.app',
         'shopping-list.json');
     final response = await http.get(url);
     // print(response.statusCode);
 
-    if(response.statusCode >= 400){
+    if (response.statusCode >= 400) {
       setState(() {
         _error = "Failed to fetch data, please try again later";
       });
     }
 
-    final Map<String, dynamic> listDate =
-        json.decode(response.body);
+    final Map<String, dynamic> listDate = json.decode(response.body);
     final List<GroceryItem> loadedItems = [];
     for (final item in listDate.entries) {
       final category = categories.entries
@@ -78,6 +77,12 @@ class _GroceryListState extends State<GroceryList> {
   }
 
   void _removeItem(GroceryItem item) {
+    final url = Uri.https(
+        'learning-flutter-bcd61-default-rtdb.asia-southeast1.firebasedatabase.app',
+        'shopping-list/${item.id}.json');
+    
+    http.delete(url);
+
     setState(() {
       _groceryItems.remove(item);
     });
@@ -89,8 +94,10 @@ class _GroceryListState extends State<GroceryList> {
       child: Text("Add an item to continue"),
     );
 
-    if (isLoading){
-      content = const Center(child: CircularProgressIndicator(),);
+    if (isLoading) {
+      content = const Center(
+        child: CircularProgressIndicator(),
+      );
     }
 
     if (_groceryItems.isNotEmpty) {
@@ -116,7 +123,7 @@ class _GroceryListState extends State<GroceryList> {
       );
     }
 
-    if (_error != null){
+    if (_error != null) {
       content = Center(child: Text(_error!));
     }
 
