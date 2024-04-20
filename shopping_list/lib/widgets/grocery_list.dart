@@ -30,35 +30,49 @@ class _GroceryListState extends State<GroceryList> {
     final url = Uri.https(
         'learning-flutter-bcd61-default-rtdb.asia-southeast1.firebasedatabase.app',
         'shopping-list.json');
-    final response = await http.get(url);
-    // print(response.statusCode);
 
-    if (response.statusCode >= 400) {
+    try {
+      final response = await http.get(url);
+      // print(response.statusCode);
+
+      if (response.statusCode >= 400) {
+        setState(() {
+          _error = "Failed to fetch data, please try again later";
+        });
+      }
+
+      if (response.body == 'null') {
+        setState(() {
+          isLoading = false;
+        });
+        return;
+      }
+
+      final Map<String, dynamic> listData = json.decode(response.body);
+      final List<GroceryItem> loadedItems = [];
+      for (final item in listData.entries) {
+        final category = categories.entries
+            .firstWhere(
+                (element) => element.value.title == item.value['category'])
+            .value;
+        loadedItems.add(
+          GroceryItem(
+            id: item.key,
+            name: item.value['name'],
+            quantity: item.value['quantity'],
+            category: category,
+          ),
+        );
+      }
       setState(() {
-        _error = "Failed to fetch data, please try again later";
+        _groceryItems = loadedItems;
+        isLoading = false;
+      });
+    } catch (error) {
+      setState(() {
+        _error = 'Internet is not available or smth else went wrong.';
       });
     }
-
-    final Map<String, dynamic> listDate = json.decode(response.body);
-    final List<GroceryItem> loadedItems = [];
-    for (final item in listDate.entries) {
-      final category = categories.entries
-          .firstWhere(
-              (element) => element.value.title == item.value['category'])
-          .value;
-      loadedItems.add(
-        GroceryItem(
-          id: item.key,
-          name: item.value['name'],
-          quantity: item.value['quantity'],
-          category: category,
-        ),
-      );
-    }
-    setState(() {
-      _groceryItems = loadedItems;
-      isLoading = false;
-    });
   }
 
   void _addItem() async {
@@ -76,16 +90,23 @@ class _GroceryListState extends State<GroceryList> {
     });
   }
 
-  void _removeItem(GroceryItem item) {
-    final url = Uri.https(
-        'learning-flutter-bcd61-default-rtdb.asia-southeast1.firebasedatabase.app',
-        'shopping-list/${item.id}.json');
-    
-    http.delete(url);
-
+  void _removeItem(GroceryItem item) async {
+    final index = _groceryItems.indexOf(item);
     setState(() {
       _groceryItems.remove(item);
     });
+
+    final url = Uri.https(
+        'learning-flutter-bcd61-default-rtdb.asia-southeast1.firebasedatabase.app',
+        'shopping-list/${item.id}.json');
+
+    final response = await http.delete(url);
+
+    if (response.statusCode >= 400) {
+      setState(() {
+        _groceryItems.insert(index, item);
+      });
+    }
   }
 
   @override
