@@ -17,14 +17,13 @@ class GroceryList extends StatefulWidget {
 }
 
 class _GroceryListState extends State<GroceryList> {
-  List<GroceryItem> _groceryItems = [];
+   final List<GroceryItem> _groceryItems = [];
   late Future<List<GroceryItem>> _loadedItems;
-  String? _error;
 
   @override
   void initState() {
     super.initState();
-    _loadedItems=_loadItems();
+    _loadedItems = _loadItems();
   }
 
   Future<List<GroceryItem>> _loadItems() async {
@@ -36,16 +35,7 @@ class _GroceryListState extends State<GroceryList> {
     // print(response.statusCode);
 
     if (response.statusCode >= 400) {
-      // setState(() {
-      //   _error = "Failed to fetch data, please try again later";
-      // });
-    }
-
-    if (response.body == 'null') {
-      setState(() {
-        isLoading = false;
-      });
-      return [];
+      throw Exception('Failed to fetch items. Please try again later.');
     }
 
     final Map<String, dynamic> listData = json.decode(response.body);
@@ -103,43 +93,6 @@ class _GroceryListState extends State<GroceryList> {
 
   @override
   Widget build(BuildContext context) {
-    Widget content = const Center(
-      child: Text("Add an item to continue"),
-    );
-
-    if (isLoading) {
-      content = const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-
-    if (_groceryItems.isNotEmpty) {
-      content = ListView.builder(
-        itemCount: _groceryItems.length,
-        itemBuilder: (ctx, index) => Dismissible(
-          onDismissed: (direction) {
-            _removeItem(_groceryItems[index]);
-          },
-          key: ValueKey(_groceryItems[index].id),
-          child: ListTile(
-            title: Text(_groceryItems[index].name),
-            leading: Container(
-              width: 24,
-              height: 24,
-              color: _groceryItems[index].category.color,
-            ),
-            trailing: Text(
-              _groceryItems[index].quantity.toString(),
-            ),
-          ),
-        ),
-      );
-    }
-
-    if (_error != null) {
-      content = Center(child: Text(_error!));
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your groceries'),
@@ -157,9 +110,51 @@ class _GroceryListState extends State<GroceryList> {
               )),
         ],
       ),
-      body: FutureBuilder (future: _loadItems(), builder: (context, snapshot){
+      body: FutureBuilder(
+        future: _loadedItems,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
-      },),
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                snapshot.error.toString(),
+              ),
+            );
+          }
+
+          if (snapshot.data!.isEmpty) {
+            return const Center(
+              child: Text("Add an item to continue"),
+            );
+          }
+
+          return ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (ctx, index) => Dismissible(
+              onDismissed: (direction) {
+                _removeItem(snapshot.data![index]);
+              },
+              key: ValueKey(snapshot.data![index].id),
+              child: ListTile(
+                title: Text(snapshot.data![index].name),
+                leading: Container(
+                  width: 24,
+                  height: 24,
+                  color: snapshot.data![index].category.color,
+                ),
+                trailing: Text(
+                  snapshot.data![index].quantity.toString(),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
