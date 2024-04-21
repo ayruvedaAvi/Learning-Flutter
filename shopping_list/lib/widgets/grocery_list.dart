@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -17,62 +18,53 @@ class GroceryList extends StatefulWidget {
 
 class _GroceryListState extends State<GroceryList> {
   List<GroceryItem> _groceryItems = [];
-  var isLoading = true;
+  late Future<List<GroceryItem>> _loadedItems;
   String? _error;
 
   @override
   void initState() {
     super.initState();
-    _loadItems();
+    _loadedItems=_loadItems();
   }
 
-  void _loadItems() async {
+  Future<List<GroceryItem>> _loadItems() async {
     final url = Uri.https(
         'learning-flutter-bcd61-default-rtdb.asia-southeast1.firebasedatabase.app',
         'shopping-list.json');
 
-    try {
-      final response = await http.get(url);
-      // print(response.statusCode);
+    final response = await http.get(url);
+    // print(response.statusCode);
 
-      if (response.statusCode >= 400) {
-        setState(() {
-          _error = "Failed to fetch data, please try again later";
-        });
-      }
+    if (response.statusCode >= 400) {
+      // setState(() {
+      //   _error = "Failed to fetch data, please try again later";
+      // });
+    }
 
-      if (response.body == 'null') {
-        setState(() {
-          isLoading = false;
-        });
-        return;
-      }
-
-      final Map<String, dynamic> listData = json.decode(response.body);
-      final List<GroceryItem> loadedItems = [];
-      for (final item in listData.entries) {
-        final category = categories.entries
-            .firstWhere(
-                (element) => element.value.title == item.value['category'])
-            .value;
-        loadedItems.add(
-          GroceryItem(
-            id: item.key,
-            name: item.value['name'],
-            quantity: item.value['quantity'],
-            category: category,
-          ),
-        );
-      }
+    if (response.body == 'null') {
       setState(() {
-        _groceryItems = loadedItems;
         isLoading = false;
       });
-    } catch (error) {
-      setState(() {
-        _error = 'Internet is not available or smth else went wrong.';
-      });
+      return [];
     }
+
+    final Map<String, dynamic> listData = json.decode(response.body);
+    final List<GroceryItem> loadedItems = [];
+    for (final item in listData.entries) {
+      final category = categories.entries
+          .firstWhere(
+              (element) => element.value.title == item.value['category'])
+          .value;
+      loadedItems.add(
+        GroceryItem(
+          id: item.key,
+          name: item.value['name'],
+          quantity: item.value['quantity'],
+          category: category,
+        ),
+      );
+    }
+    return loadedItems;
   }
 
   void _addItem() async {
@@ -165,7 +157,9 @@ class _GroceryListState extends State<GroceryList> {
               )),
         ],
       ),
-      body: content,
+      body: FutureBuilder (future: _loadItems(), builder: (context, snapshot){
+
+      },),
     );
   }
 }
