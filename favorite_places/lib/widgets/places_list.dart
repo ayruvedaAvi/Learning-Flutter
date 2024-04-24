@@ -8,8 +8,11 @@ class PlacesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (places.isEmpty) {
-      return const Center(
-        child: Text('Add a place to continue.'),
+      return Center(
+        child: Text('Add a place to continue.', style: Theme.of(context)
+            .textTheme
+            .bodyLarge!
+            .copyWith(color: Theme.of(context).colorScheme.onBackground)),
       );
     }
 
