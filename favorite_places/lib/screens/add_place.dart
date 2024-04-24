@@ -1,15 +1,18 @@
-import 'package:flutter/material.dart';
+import 'package:favorite_places/providers/user_places.dart';
 
-class AddPlaceScreen extends StatefulWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class AddPlaceScreen extends ConsumerStatefulWidget {
   const AddPlaceScreen({super.key});
 
   @override
-  State<AddPlaceScreen> createState() {
+  ConsumerState<AddPlaceScreen> createState() {
     return _AddPlaceScreenState();
   }
 }
 
-class _AddPlaceScreenState extends State<AddPlaceScreen> {
+class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   final _titleController = TextEditingController();
 
   @override
@@ -17,6 +20,18 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     _titleController.dispose();
     super.dispose();
   }
+
+  void _savePlace(){
+    final enteredTitle = _titleController.text;
+    if(enteredTitle.isEmpty){
+      return;
+    }
+
+    ref.read(userPlacesProvider.notifier).addPlace(enteredTitle);
+
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +39,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
         title: const Text('Add new place'),
       ),
       body: SingleChildScrollView(
+        padding: const EdgeInsets.all(12),
         child: Column(
           children: [
             TextField(
@@ -31,7 +47,17 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                 labelText: 'Title',
               ),
               controller: _titleController,
+              style:
+                  TextStyle(color: Theme.of(context).colorScheme.onBackground),
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            ElevatedButton.icon(
+              onPressed: _savePlace,
+              icon: const Icon(Icons.add),
+              label: const Text('Add place.'),
+            )
           ],
         ),
       ),
