@@ -10,7 +10,7 @@ class PlacesList extends StatelessWidget {
   Widget build(BuildContext context) {
     if (places.isEmpty) {
       return Center(
-        child: Text('Add a place to continue.',
+        child: Text('No places available. Add a place to continue.',
             style: Theme.of(context)
                 .textTheme
                 .bodyLarge!
